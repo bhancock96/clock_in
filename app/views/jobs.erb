@@ -1,0 +1,16 @@
+<div class='jobs_table'>
+	<table>
+		<thead>
+			<th>Name</th>
+			<th>Job Address</th>
+			<th>Hours Worked</th>
+		</thead>
+		<% @jobs.each do |job| %>
+			<tr>
+				<td><a href="/job/<%= job.id %>"><%= job.name %></a></td>
+				<td><%= job.street_address %></td>
+				<td>Total hours</td>
+			</tr>
+		<% end %>
+	</table>
+</div>

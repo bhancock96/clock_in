@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- 
+    normalize.css removes cross-browser differences in defaults, e.g.,
+    differences in how form elements appear between Firefox and IE
+    See: http://necolas.github.com/normalize.css/
+  -->
+  <link rel="stylesheet" href="/css/normalize.css">
+  <!--
+    application.css is where you put your styles
+  -->
+  <link rel="stylesheet" href="/css/application.css">
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="/js/application.js"></script>
+  
+  <script src='http://maps.googleapis.com/maps/api/js?key=AIzaSyBbYhFsGwnXxn1kzFl2Xuth0jxCvfBCSKA&sensor=true' type="text/javascript"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+  <!-- // <script src="//code.jquery.com/jquery-1.10.2.js"></script> -->
+  <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+  <meta name="viewport" content="width=device-width"/>
+  <title></title>
+</head>
+<body >
+  <% if current_user %>
+    <a href="/logout" id='logout'>Logout</a>
+  <% end %>
+  <% if current_admin %>
+    <p>Hello <%= @current_admin.first_name %></p>
+    <!-- <a href="/admin/logout">Logout</a> -->
+    <form action='/admin/logout' method='post'>
+      <input type='submit' value='logout'>
+    </form>
+  <% end %>
+  <%= yield %>
+</body>
+</html>

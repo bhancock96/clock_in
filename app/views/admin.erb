@@ -1,0 +1,72 @@
+<h1>Admin Page</h1>
+<div class='menu_bar'>
+	<ul>
+		<li><a href="/employee/new">Create New Employee</a></li>
+		<li><a href="/job/new">Create a Job</a></li>
+		<li><a href="">View All Employees</a></li>
+		<li><a href="/jobs">View Jobs</a></li>
+	</ul>
+</div>
+
+<div class='info_tables'>
+	<div class='jobs_table'>
+		<h3>Jobs</h3>
+		<table>
+			<thead>
+				<th>Name</th>
+				<th>Job Address</th>
+				<th>Hours Worked</th>
+			</thead>
+			<% @jobs.each do |job| %>
+				<tr>
+					<td><a href="/job/<%= job.id %>"><%= job.name %></a></td>
+					<td><%= job.street_address %></td>
+					<% if job.total_hours %>
+						<td><%= job.total_hours %></td>
+					<% else %>
+						<td>0</td>
+					<% end %>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+
+	<div id='employees_table'>
+		<h3>Employees</h3>
+		<table>
+			<thead>
+				<th>Name</th>
+				<th>Position</th>
+				<th>Status</th>
+			</thead>
+			<% @employees.each do |emp| %>
+				<tr>
+					<td><%= emp.first_name %> <%= emp.last_name %></td>
+					<td><%= emp.position %></td>
+					<td><%= emp.status %></td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+
+	<div class='report_dates'>
+		<h4>Generate Hours Report</h4>
+		<form action='' method=''>
+			<div>
+				<div>
+					<input type='text' name='from' id='from'>
+				</div>
+			</div>
+			<div>
+				<div>
+					<input type='text' name='to' id='to'>
+				</div>
+			</div>
+			<div>
+				<div>
+					<input type='submit' value='Generate Report'>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

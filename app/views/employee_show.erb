@@ -1,0 +1,32 @@
+<div class='emp_show'>
+	<div class='clock_in'>
+		<h3>Job Address</h3>
+		<form action='/clock_in/create' method='post' id='new_clock_in_event'>
+			<select name='job_id' class='job_address'>
+				<% @jobs.all.each do |job| %>
+					<option value='<%= job.id %>'><%= job.street_address %>, <%= job.city %> <%= job.zipcode %></option>
+				<% end %>
+			</select>
+			<input type='hidden' value='<%= @employee.id %>' name='employee_id'>
+			<input type='submit' value='Clock In'>
+		</form>
+	</div>
+
+	<div class='ci_activity'>
+		<h3>Recent Clock In Activity</h3>
+		<table>
+			<thead>
+				<th>Job Name</th>
+				<th>Date/Time</th>
+				<th>In/Out</th>
+			</thead>
+			<% @clock_in_events.each do |event| %>
+			<tr>
+				<td><%= Job.find(event.job_id).name %></td>
+				<td><%= event.created_at.strftime('%m-%d-%Y %I:%M %p') %></td>
+				<td><%= event.event %></td>
+			</tr>
+			<% end %>
+		</table>
+	</div>
+</div>

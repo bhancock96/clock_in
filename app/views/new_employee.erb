@@ -1,0 +1,26 @@
+<div class='container'>
+	<div class='center'>
+		<form action='/employee/create' method='post'>
+			<h3>New Employee</h3>
+			<label>First Name</label>
+			<input type='text' name='first_name'>
+			<label>Last Name</label>
+			<input type='text' name='last_name'>
+			<label>Position</label>
+			<input type='text' name='position'>
+			<label>Status</label>
+			<select name='status' class='status'>
+				<option>Active</option>
+				<option>Suspended</option>
+				<option>Terminated</option>
+			</select>
+			<label for='email'>Email Name</label>
+			<input type='email' name='email' id='email'>
+			<label>Password</label>
+			<input type='password' name='password'>
+			<label>Confirm Password</label>
+			<input type='password' name='password_confirmation'>
+			<input type='submit' value='Submit'>
+		</form>
+	</div>
+</div>

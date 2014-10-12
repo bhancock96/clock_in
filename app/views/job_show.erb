@@ -1,0 +1,118 @@
+<h1><%= @job.name %></h1>
+<h2><%= @job.street_address %></h2>
+
+<div>
+	<div class='job_clock_ins' data-id='<%= @job.id %>'>
+		<table>
+			<thead>
+				<th>Employee</th>
+				<th>Clock In/Out Time</th>
+			</thead>
+			<tbody>
+                <% @employees.each do |emp| %>
+    				<% emp.clock_in_events.each do |ci| %>
+    					<tr data-lat='<%= ci.latitude %>' data-long='<%= ci.longitude %>'>
+    							<td><%= ci.employee.first_name %> <%= ci.employee.last_name %></td>
+    							<td><%= ci.created_at.strftime('%m/%d/%Y %l:%M%P') %>  <a href="" class='edit_ci'  data-id='<%= ci.id %>'>Edit</a>
+                                <div class='edit_form' id='ci_edit_<%= ci.id %>' data-id='<%= ci.id %>'>
+                                    <form action='/clockin/edit/<%= ci.id %>' method='post'>
+                                        <label>Date</label>
+                                        <input name='date' type='text' value='<%= ci.created_at.strftime('%Y-%m-%d') %>'>
+                                        <label>Time</label>
+                                        <input name='time' type='text' value='<%= ci.created_at.strftime('%l:%M %p') %>'>
+                                        <input type='submit' value='Submit Changes'>
+                                    </form>
+
+                                    <form action='/clockin/delete/<%= ci.id %>' method='post'>
+                                        <input type='submit' value='Delete'>
+                                    </form>
+                                </div>
+                                </td>
+                    <% end %>
+                        </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><%= @job.employee_job_hours(emp.id) %> Hours</td>
+                    </tr>
+                <% end %>
+                <tr>
+                    <td>Total Hours</td>
+                    <td><%= @job.total_hours %></td>
+
+                </tr>
+            </tbody>
+		</table>
+	</div>
+	<div id="map-canvas" style="width: 60%; height: 400px; display: inline-block" data-lat='<%= @job.latitude %>' data-long='<%= @job.longitude %>'></div>
+    <div class='add_clock_in'>
+        <form action="/add_clock_in" method='post'>
+            <h4>Add Clock In</h4>
+            <div class='emp_dropdown'>
+                <label>Employee</label>
+                <select name='employee'>
+                    <% @employees.each do |emp| %>
+                        <option value='<%= emp.id %>'><%= emp.first_name %> <%= emp.last_name %></option>
+                    <% end %>
+                </select>
+            </div>
+            <div class='datetime'>
+                <label>Date</label>
+                <input type='text' name='date'  id='datepicker'>
+                <label>Time</label>
+                <input type='text' name='time'>
+                <input type='hidden' value='<%= @job.id %>' name='job'>
+                <select name='am_pm'>
+                    <option value='AM'>AM</option>
+                    <option value='PM'>PM</option>
+                </select>
+            </div>
+            <input type='submit' value='Add Clock In' class='submit'>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+var latitude  = $('#map-canvas').attr('data-lat')
+var longitude = $('#map-canvas').attr('data-long')
+
+function initMap() {
+    var latlng = new google.maps.LatLng(latitude, longitude);
+    var myOptions = {
+        zoom: 10,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map-canvas"),
+            myOptions);
+
+    var marker = new google.maps.Marker({
+    position: latlng,
+    icon: {
+    	path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+    	scale: 5
+    },
+    map: map,
+    title:"Job"
+	})
+
+    var marker, i;
+    var locations = [];
+
+    $('.job_clock_ins tbody tr').each(function(){
+    	$this = $(this)
+    	var ci_lat = $this.attr('data-lat')
+    	var ci_long = $this.attr('data-long')
+    	locations.push([ci_lat, ci_long])
+    })
+
+    for (i = 0; i < locations.length; i++){
+    	new google.maps.Marker({
+    		position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+    		map: map
+    	})
+    }
+}
+google.maps.event.addDomListener(window, "load", initMap);
+
+</script>
